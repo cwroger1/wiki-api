@@ -16,6 +16,14 @@ mongoose.connection.on('connected', function () {
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended: true}));
 
+const articleSchema = {
+    title: String,
+    content: String
+};
+
+const Article = mongoose.model("Article", articleSchema);
+
+// this goes at the bottom to ensure proper configuration before allowing connections
 app.listen(3000, () => {
     console.log("Server has started on port 3000");
 });
