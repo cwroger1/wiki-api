@@ -27,29 +27,25 @@ const Article = mongoose.model("Article", articleSchema);
 
 // functions
 
-app.get("/articles", (req, res) => {
-    Article.find().then((results) => {
-        //console.log(results);
-        res.send(results);
-    }).catch((err) => {
-        //console.log(err);
-        res.send(err);
+app.route("/articles")
+    .get((req, res) => {
+        Article.find().then((results) => {
+            res.send(results);
+        }).catch((err) => {
+            res.send(err);
+        });
+    })
+    .post((req, res) => {
+        const title = req.body.title;
+        const content = req.body.content;
+        const newArticle = new Article({
+            title: title,
+            content: content 
+        });
+        newArticle.save().then((result) => {
+            res.send(result);
+        });
     });
-});
-
-app.post("/articles", (req, res) => {
-    const title = req.body.title;
-    const content = req.body.content;
-    console.log(title);
-    console.log(content);
-    const newArticle = new Article({
-        title: title,
-        content: content 
-    });
-    newArticle.save().then((result) => {
-        res.send(result);
-    });
-});
 
 // this goes at the bottom to ensure proper configuration before allowing connections
 app.listen(3000, () => {
