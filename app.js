@@ -47,6 +47,27 @@ app.route("/articles")
         });
     });
 
+app.route("/articles/:articleTitle")
+    .get((req, res) => {
+        Article.findOne({title: req.params.articleTitle})
+        .then((foundArticle) => {
+            res.send(foundArticle);
+        }).catch((err) => {
+            res.send(err);
+        });
+    })
+    .put((req, res) => {
+        Article.findOneAndUpdate(
+            {title: req.params.articleTitle},
+            {title: req.body.title, content: req.body.content},
+            {overwrite: true})
+        .then((message) => {
+            res.send(message);
+        }).catch((err) => {
+            res.send(err);
+        });
+    });
+
 // this goes at the bottom to ensure proper configuration before allowing connections
 app.listen(3000, () => {
     console.log("Server has started on port 3000");
