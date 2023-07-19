@@ -16,12 +16,26 @@ mongoose.connection.on('connected', function () {
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended: true}));
 
+// schemas and models
+
 const articleSchema = {
     title: String,
     content: String
 };
 
 const Article = mongoose.model("Article", articleSchema);
+
+// functions
+
+app.get("/articles", (req, res) => {
+    Article.find().then((results) => {
+        //console.log(results);
+        res.send(results);
+    }).catch((err) => {
+        //console.log(err);
+        res.send(err);
+    });
+});
 
 // this goes at the bottom to ensure proper configuration before allowing connections
 app.listen(3000, () => {
