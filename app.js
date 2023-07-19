@@ -37,6 +37,20 @@ app.get("/articles", (req, res) => {
     });
 });
 
+app.post("/articles", (req, res) => {
+    const title = req.body.title;
+    const content = req.body.content;
+    console.log(title);
+    console.log(content);
+    const newArticle = new Article({
+        title: title,
+        content: content 
+    });
+    newArticle.save().then((result) => {
+        res.send(result);
+    });
+});
+
 // this goes at the bottom to ensure proper configuration before allowing connections
 app.listen(3000, () => {
     console.log("Server has started on port 3000");
