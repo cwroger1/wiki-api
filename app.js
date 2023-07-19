@@ -60,7 +60,27 @@ app.route("/articles/:articleTitle")
         Article.findOneAndUpdate(
             {title: req.params.articleTitle},
             {title: req.body.title, content: req.body.content},
-            {overwrite: true})
+            {overwrite: true, new: true}) // 'new' returns updated doc instead of original
+        .then((message) => {
+            res.send(message);
+        }).catch((err) => {
+            res.send(err);
+        });
+    })
+    .patch((req, res) => {
+        Article.findOneAndUpdate(
+            {title: req.params.articleTitle},
+            {$set: req.body},
+            {new: true}) // 'new' returns updated doc instead of original
+        .then((message) => {
+            res.send(message);
+        }).catch((err) => {
+            res.send(err);
+        });
+    })
+    .delete((req, res) => {
+        Article.findOneAndDelete(
+            {title: req.params.articleTitle},)
         .then((message) => {
             res.send(message);
         }).catch((err) => {
